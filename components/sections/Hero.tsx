@@ -160,7 +160,7 @@ export default function Hero() {
 
                 {/* Buttons */}
                 <div className="flex gap-4 justify-end">
-                    <a href="#projects" className="group flex items-center justify-center gap-2 bg-lenis-pink text-black px-6 py-4 font-bold font-syncopate text-sm hover:bg-white transition-colors duration-300">
+                    <a href="https://github.com/Kanee18?tab=repositories" className="group flex items-center justify-center gap-2 bg-lenis-pink text-black px-6 py-4 font-bold font-syncopate text-sm hover:bg-white transition-colors duration-300">
                         <Github className="w-4 h-4" />
                         PROJECTS
                         <ArrowDownLeft className="w-4 h-4 group-hover:rotate-45 transition-transform" />
