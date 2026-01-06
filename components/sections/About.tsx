@@ -100,8 +100,10 @@ export default function About() {
                                 I build interfaces that feel functional, futuristic, and alive.
                             </p>
                             <p>
-                                Currently deployed on missions involving 3D WebGL, Next.js, and advanced interactive systems.
-                                Objective: Turn complex problems into elegant, visual solutions.
+                                I'm an anime-style digital artist specializing in character illustration—designing
+                                captivating original characters (OCs), fan art, and concepts with distinctive anime-inspired flair.
+                                My illustrations often feature glowing effects, dramatic lighting, and emotional depth to make the
+                                characters feel alive and relatable.
                             </p>
                         </div>
 
