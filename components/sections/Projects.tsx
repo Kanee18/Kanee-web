@@ -220,9 +220,9 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showVi
 
             {/* View More Button - Hanging Outside Bottom Left */}
             {showViewMore && (
-                <div className="absolute -bottom-16 left-0 z-30">
+                <div className="absolute -bottom-24 left-0 z-30">
                     <a
-                        href={items[currentIndex].links.demo}
+                        href="https://github.com/Kanee18"
                         className="inline-flex items-center gap-3 bg-[#1a1a1a] hover:bg-[#252525] border-l-4 border-lenis-pink pl-6 pr-8 py-4 transition-colors group/view cursor-pointer shadow-xl"
                     >
                         <span className="font-orbitron font-bold text-white text-sm tracking-wider uppercase">VIEW MORE</span>
@@ -310,7 +310,7 @@ export default function Projects() {
             </div>
 
             {/* Bottom Action Bar */}
-            <div className="container mx-auto px-6 mt-16 flex justify-end">
+            <div className="container mx-auto px-6 mt-11 flex justify-end">
                 <a
                     href="https://x.com/akanee_18"
                     target="_blank"
