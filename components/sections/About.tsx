@@ -4,8 +4,13 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { GlitchText } from '@/components/ui/GlitchText';
-import { HologramProfile } from '@/components/canvas/HologramProfile';
 import { StatBar } from '@/components/ui/StatBar';
+import dynamic from 'next/dynamic';
+
+const HologramProfile = dynamic(() => import('@/components/canvas/HologramProfile').then(mod => mod.HologramProfile), {
+    ssr: false,
+    loading: () => <div className="w-full h-full bg-white/5 animate-pulse" />
+});
 
 gsap.registerPlugin(ScrollTrigger);
 

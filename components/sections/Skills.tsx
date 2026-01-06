@@ -11,7 +11,18 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Skills() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [viewed, setViewed] = useState(false);
-    const [cpuLoad, setCpuLoad] = useState(12); // Initial stable value
+    const [cpuLoad, setCpuLoad] = useState(12);
+
+    useEffect(() => {
+        // Optimization: Only run interval when in view and less frequently
+        if (!viewed) return;
+
+        const interval = setInterval(() => {
+            setCpuLoad(Math.floor(Math.random() * 30 + 10));
+        }, 2000); // Slower update rate (2s) instead of implicit fast updates
+
+        return () => clearInterval(interval);
+    }, [viewed]);
 
     useEffect(() => {
         setCpuLoad(Math.floor(Math.random() * 30 + 10)); // Randomize on client mount
@@ -99,9 +110,9 @@ export default function Skills() {
                     </div>
 
 
-                    {/* Dummy Histogram (Background) */}
+                    {/* Dummy Histogram (Background) - Optimized count */}
                     <div className="absolute inset-0 z-0 flex items-end justify-between px-2 pointer-events-none opacity-10">
-                        {[...Array(40)].map((_, i) => (
+                        {[...Array(20)].map((_, i) => ( // Reduced from 40 to 20 for mobile perf
                             <motion.div
                                 key={i}
                                 initial={{ height: "5%" }}

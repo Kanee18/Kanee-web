@@ -110,7 +110,16 @@ function HologramPlane() {
 export function HologramProfile() {
     return (
         <div className="w-full h-full">
-            <Canvas camera={{ position: [0, 0, 2.5], fov: 50 }}>
+            <Canvas
+                camera={{ position: [0, 0, 2.5], fov: 50 }}
+                dpr={[1, 1.5]} // Cap pixel ratio for mobile performance
+                gl={{
+                    powerPreference: "high-performance",
+                    antialias: false, // Disable AA for shader-heavy aesthetic & performance
+                    stencil: false,
+                    depth: false // depth unused for 2D plane
+                }}
+            >
                 {/* <OrbitControls enableZoom={false} /> */}
                 <HologramPlane />
             </Canvas>
