@@ -9,7 +9,6 @@ const orbitron = Orbitron({ subsets: ["latin"], variable: "--font-orbitron" });
 
 export const metadata: Metadata = {
   title: "Kanee Portfolio",
-  description: "A futuristic portfolio website.",
 };
 
 export default function RootLayout({
