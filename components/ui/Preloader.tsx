@@ -8,8 +8,8 @@ export default function Preloader() {
     const { isLoading, setIsLoading } = useLoading();
     const [progress, setProgress] = useState(0);
 
+
     useEffect(() => {
-        // Simulate loading progress
         const timer = setInterval(() => {
             setProgress((prev) => {
                 if (prev >= 100) {
@@ -24,6 +24,13 @@ export default function Preloader() {
         return () => clearInterval(timer);
     }, [setIsLoading]);
 
+    const handleStart = () => {
+        // Dispatch event for Navbar to start audio
+        document.dispatchEvent(new Event('portfolio-start'));
+
+        setIsLoading(false);
+    };
+
     return (
         <AnimatePresence>
             {isLoading && (
@@ -31,7 +38,7 @@ export default function Preloader() {
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-black"
+                    className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black"
                 >
                     {/* Progress Bar */}
                     <div className="absolute bottom-20 w-64 h-1 bg-gray-900 rounded-full overflow-hidden">
