@@ -74,9 +74,10 @@ interface ProjectCarouselProps {
     items: typeof projects;
     sidebarText: string;
     sidebarPosition?: 'left' | 'right';
+    showViewMore?: boolean;
 }
 
-function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right' }: ProjectCarouselProps) {
+function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showViewMore = false }: ProjectCarouselProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextSlide = () => {
@@ -138,13 +139,15 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right' }: Proj
                                     {currentProject.title}
                                 </h3>
 
-                                <div className="flex flex-wrap gap-2">
+
+                                <div className="flex flex-wrap gap-2 mb-8">
                                     {currentProject.tech.map((t, i) => (
                                         <span key={i} className="px-3 py-1 bg-black/50 border border-white/10 text-xs text-gray-300 font-mono backdrop-blur-sm">
                                             {t}
                                         </span>
                                     ))}
                                 </div>
+
                             </div>
                         </div>
 
@@ -214,6 +217,19 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right' }: Proj
                     </div>
                 </div>
             )}
+
+            {/* View More Button - Hanging Outside Bottom Left */}
+            {showViewMore && (
+                <div className="absolute -bottom-16 left-0 z-30">
+                    <a
+                        href={items[currentIndex].links.demo}
+                        className="inline-flex items-center gap-3 bg-[#1a1a1a] hover:bg-[#252525] border-l-4 border-lenis-pink pl-6 pr-8 py-4 transition-colors group/view cursor-pointer shadow-xl"
+                    >
+                        <span className="font-orbitron font-bold text-white text-sm tracking-wider uppercase">VIEW MORE</span>
+                        <ArrowRight className="w-4 h-4 text-lenis-pink group-hover/view:translate-x-1 transition-transform" />
+                    </a>
+                </div>
+            )}
         </div>
     );
 }
@@ -277,7 +293,7 @@ export default function Projects() {
 
             {/* Projects Carousel */}
             <div className="container mx-auto px-6 relative z-10 mb-24">
-                <ProjectCarousel items={projects} sidebarText="PROJECT IT" />
+                <ProjectCarousel items={projects} sidebarText="PROJECT IT" showViewMore={true} />
             </div>
 
             {/* Illustration Header */}
@@ -290,18 +306,18 @@ export default function Projects() {
 
             {/* Illustration Carousel */}
             <div className="container mx-auto px-6 relative z-10">
-                <ProjectCarousel items={illustrations} sidebarText="ILLUSTRATIONS" sidebarPosition="left" />
+                <ProjectCarousel items={illustrations} sidebarText="ILLUSTRATIONS" sidebarPosition="left" showViewMore={false} />
             </div>
 
             {/* Bottom Action Bar */}
             <div className="container mx-auto px-6 mt-16 flex justify-end">
                 <a
-                    href="https://github.com/Kanee18"
+                    href="https://x.com/akanee_18"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-[#1a1a1a] hover:bg-[#252525] text-white px-8 py-4 flex items-center space-x-3 border-l-4 border-lenis-pink transition-colors"
                 >
-                    <span className="font-bold tracking-wider font-orbitron uppercase">More Intel</span>
+                    <span className="font-bold tracking-wider font-orbitron uppercase">View More</span>
                     <ArrowRight size={18} className="text-lenis-pink" />
                 </a>
             </div>
