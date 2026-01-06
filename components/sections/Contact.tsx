@@ -23,7 +23,7 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="py-24 bg-black relative flex items-center justify-center min-h-screen overflow-hidden">
+        <section id="contact" className="py-16 md:py-24 bg-black relative flex items-center justify-center min-h-screen overflow-hidden">
             {/* Background Radar */}
             <HolographicRadar />
 
@@ -31,7 +31,7 @@ export default function Contact() {
 
                 {/* Info Side */}
                 <div>
-                    <h2 className="text-5xl md:text-7xl font-orbitron font-bold text-white mb-6">
+                    <h2 className="text-3xl md:text-7xl font-orbitron font-bold text-white mb-6">
                         <GlitchText text="LET'S" /> <br />
                         <span className="text-lenis-pink"><GlitchText text="CONNECT" /></span>
                     </h2>
@@ -62,7 +62,7 @@ export default function Contact() {
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="bg-[#0a0a0a] border border-white/10 p-8 md:p-12 relative"
+                    className="bg-[#0a0a0a] border border-white/10 p-6 md:p-12 relative"
                 >
                     {/* Decor corners */}
                     <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-lenis-pink/50" />

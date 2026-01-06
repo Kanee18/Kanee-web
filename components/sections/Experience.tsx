@@ -98,7 +98,7 @@ export default function Experience() {
     }, []);
 
     return (
-        <section id="experience" className="py-32 bg-[#030303] relative overflow-hidden min-h-screen flex items-center" ref={containerRef}>
+        <section id="experience" className="py-20 md:py-32 bg-[#030303] relative overflow-hidden min-h-screen flex items-center" ref={containerRef}>
 
             {/* Background Data Grid */}
             <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
@@ -108,7 +108,7 @@ export default function Experience() {
 
             <div className="container mx-auto px-6 max-w-5xl relative z-10">
                 <div className="text-center mb-24 relative">
-                    <h2 className="text-5xl md:text-7xl font-bold font-orbitron text-white tracking-tighter">
+                    <h2 className="text-3xl md:text-7xl font-bold font-orbitron text-white tracking-tighter">
                         <GlitchText text="CAREER_LOGS" />
                     </h2>
                     <div className="flex items-center justify-center gap-4 mt-4">

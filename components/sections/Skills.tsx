@@ -57,7 +57,7 @@ export default function Skills() {
 
             <div className="container mx-auto px-6 relative z-10 h-full flex flex-col">
                 <div className="mb-12">
-                    <h2 className="text-4xl md:text-6xl font-orbitron font-bold text-white text-left">
+                    <h2 className="text-3xl md:text-6xl font-orbitron font-bold text-white text-left">
                         <GlitchText text="TECHNICAL_DATA" />
                     </h2>
                     <div className="flex items-center gap-4 mt-2">
@@ -67,7 +67,7 @@ export default function Skills() {
                 </div>
 
                 {/* Cyber-Monitor Container */}
-                <div className="relative w-full h-[60vh] bg-[#0a0a0a]/80 backdrop-blur-md rounded-sm overflow-hidden border border-white/5 group">
+                <div className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] bg-[#0a0a0a]/80 backdrop-blur-md rounded-sm overflow-hidden border border-white/5 group">
 
                     {/* Monitor Glow */}
                     <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.9)] z-10 pointer-events-none"></div>

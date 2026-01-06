@@ -75,7 +75,7 @@ export default function About() {
                             <div className="w-12 h-[2px] bg-lenis-pink"></div>
                             <span className="text-lenis-pink font-mono text-sm tracking-[0.2em]">CLASSIFIED // CLEARED</span>
                         </div>
-                        <h2 className="text-5xl md:text-7xl font-orbitron font-bold text-white mb-2">
+                        <h2 className="text-3xl md:text-7xl font-orbitron font-bold text-white mb-2">
                             <GlitchText text="OPERATOR" />
                         </h2>
                         <h3 className="text-2xl md:text-3xl font-light font-syncopate text-white/50 tracking-widest">DOSSIER</h3>
@@ -121,7 +121,7 @@ export default function About() {
                 <div ref={hologramRef} className="lg:col-span-5 flex flex-col items-center justify-center">
 
                     {/* The Framed Container */}
-                    <div className="relative w-80 h-80 md:w-96 md:h-96 z-10 animate-float-slow">
+                    <div className="relative w-72 h-72 md:w-96 md:h-96 z-10 animate-float-slow">
                         {/* Background Glow */}
                         <div className="absolute inset-0 bg-lenis-pink/10 blur-3xl rounded-full"></div>
 

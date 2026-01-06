@@ -97,7 +97,7 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showVi
     const currentProject = items[currentIndex];
 
     return (
-        <div className="relative w-full flex">
+        <div className="relative w-full flex flex-col md:flex-row">
             {/* Left Sidebar (if active) */}
             {sidebarPosition === 'left' && (
                 <div className="hidden md:flex w-16 bg-lenis-pink text-black flex-col items-center justify-center border-y border-l border-lenis-pink">
@@ -108,7 +108,7 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showVi
             )}
 
             {/* Main Carousel Box */}
-            <div className="relative flex-1 aspect-[16/9] md:aspect-[21/9] bg-white/5 border border-white/10 overflow-hidden group">
+            <div className="relative w-full h-[500px] md:h-auto md:flex-1 md:aspect-[21/9] bg-white/5 border border-white/10 overflow-hidden group">
 
                 {/* Background Pattern */}
                 <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(0,0,0,0.5)_25%,transparent_25%,transparent_50%,rgba(0,0,0,0.5)_50%,rgba(0,0,0,0.5)_75%,transparent_75%,transparent)] bg-[size:4px_4px] opacity-20" />
@@ -123,7 +123,7 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showVi
                         className="absolute inset-0 flex flex-col md:flex-row"
                     >
                         {/* Visual Side (Left) */}
-                        <div className={cn("w-full md:w-2/3 h-full relative p-8 md:p-12 flex flex-col justify-end", currentProject.imageColor)}>
+                        <div className={cn("w-full md:w-2/3 h-1/2 md:h-full relative p-6 md:p-12 flex flex-col justify-end", currentProject.imageColor)}>
                             <div className="absolute top-4 right-4 text-6xl md:text-9xl font-bold font-orbitron text-white/5 select-none pointer-events-none">
                                 {currentProject.id}
                             </div>
@@ -142,7 +142,7 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showVi
 
                                 <div className="flex flex-wrap gap-2 mb-8">
                                     {currentProject.tech.map((t, i) => (
-                                        <span key={i} className="px-3 py-1 bg-black/50 border border-white/10 text-xs text-gray-300 font-mono backdrop-blur-sm">
+                                        <span key={i} className="px-3 py-1 bg-black/50 border border-white/50 text-xs text-gray-300 font-mono backdrop-blur-sm">
                                             {t}
                                         </span>
                                     ))}
@@ -152,7 +152,7 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showVi
                         </div>
 
                         {/* Description Side (Right) */}
-                        <div className="w-full md:w-1/3 h-full bg-black/80 border-l border-white/10 p-8 flex flex-col justify-between backdrop-blur-md">
+                        <div className="w-full md:w-1/3 h-1/2 md:h-full bg-black/80 border-t md:border-t-0 md:border-l border-white/10 p-6 md:p-8 flex flex-col justify-between backdrop-blur-md">
                             <div>
                                 <h4 className="text-xl font-bold text-white mb-4 font-orbitron">MISSION BRIEF</h4>
                                 <p className="text-gray-400 leading-relaxed font-light">
@@ -218,12 +218,12 @@ function ProjectCarousel({ items, sidebarText, sidebarPosition = 'right', showVi
                 </div>
             )}
 
-            {/* View More Button - Hanging Outside Bottom Left */}
+            {/* View More Button - Static on Mobile, Hanging on Desktop */}
             {showViewMore && (
-                <div className="absolute -bottom-24 left-0 z-30">
+                <div className="relative mt-4 md:absolute md:-bottom-24 md:left-0 md:mt-0 z-30 w-full md:w-auto">
                     <a
                         href="https://github.com/Kanee18"
-                        className="inline-flex items-center gap-3 bg-[#1a1a1a] hover:bg-[#252525] border-l-4 border-lenis-pink pl-6 pr-8 py-4 transition-colors group/view cursor-pointer shadow-xl"
+                        className="flex items-center justify-center md:inline-flex gap-3 bg-[#1a1a1a] hover:bg-[#252525] border-l-4 border-lenis-pink pl-6 pr-8 py-4 transition-colors group/view cursor-pointer shadow-xl w-full md:w-auto"
                     >
                         <span className="font-orbitron font-bold text-white text-sm tracking-wider uppercase">VIEW MORE</span>
                         <ArrowRight className="w-4 h-4 text-lenis-pink group-hover/view:translate-x-1 transition-transform" />

@@ -92,7 +92,7 @@ export default function Hero() {
     }, []);
 
     return (
-        <section ref={containerRef} id="hero" className="relative h-screen w-full flex flex-col justify-between pt-32 pb-12 px-6 md:px-12 z-10 overflow-hidden">
+        <section ref={containerRef} id="hero" className="relative min-h-[100dvh] w-full flex flex-col justify-between pt-32 pb-12 px-6 md:px-12 z-10 overflow-hidden">
 
 
             {/* Main Title Area */}
@@ -123,7 +123,7 @@ export default function Hero() {
                 </h1>
 
                 <div className="w-full flex justify-end mt-4 pr-[5vw] hero-element">
-                    <span className="text-white/80 font-syncopate text-xl md:text-3xl tracking-[0.2em] uppercase font-light">
+                    <span className="text-white/80 font-syncopate text-sm md:text-3xl tracking-[0.2em] uppercase font-light">
                         <ScrambleText startText="FULL STACK DEV" text="ILLUSTRATION" duration={4000} delay={500} loop={true} />
                     </span>
                 </div>
@@ -159,13 +159,13 @@ export default function Hero() {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex gap-4 justify-end">
-                    <a href="https://github.com/Kanee18?tab=repositories" className="group flex items-center justify-center gap-2 bg-lenis-pink text-black px-6 py-4 font-bold font-syncopate text-sm hover:bg-white transition-colors duration-300">
+                <div className="flex flex-col md:flex-row gap-4 justify-end w-full md:w-auto">
+                    <a href="https://github.com/Kanee18?tab=repositories" className="group flex items-center justify-center gap-2 bg-lenis-pink text-black px-6 py-3 md:py-4 font-bold font-syncopate text-xs md:text-sm hover:bg-white transition-colors duration-300 w-full md:w-auto">
                         <Github className="w-4 h-4" />
                         PROJECTS
                         <ArrowDownLeft className="w-4 h-4 group-hover:rotate-45 transition-transform" />
                     </a>
-                    <a href="https://ko-fi.com/kanee" className="group flex items-center justify-center gap-2 border border-lenis-pink text-lenis-pink px-6 py-4 font-bold font-syncopate text-sm hover:bg-lenis-pink hover:text-black transition-all duration-300">
+                    <a href="https://ko-fi.com/kanee" className="group flex items-center justify-center gap-2 border border-lenis-pink text-lenis-pink px-6 py-3 md:py-4 font-bold font-syncopate text-xs md:text-sm hover:bg-lenis-pink hover:text-black transition-all duration-300 w-full md:w-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chat-square-heart" viewBox="0 0 16 16">
                             <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
                             <path d="M8 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
