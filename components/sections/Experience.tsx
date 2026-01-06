@@ -10,24 +10,24 @@ gsap.registerPlugin(ScrollTrigger);
 const experiences = [
     {
         year: "2024 - PRESENT",
-        role: "Senior Full-Stack Developer",
+        role: "Backend Developer",
         company: "TECH CORP",
-        desc: "Leading the development of next-gen web applications using React Server Components and AI integration.",
-        tech: ["React", "Next.js", "AI"]
+        desc: "Developing AI models and applications using Python and other technologies.",
+        tech: ["Python", "Stable Diffusion", "OpenCV", "TensorFlow", "PyTorch", "ComfyUI", "FastAPI",]
     },
     {
         year: "2022 - 2024",
-        role: "UI/UX Engineer",
+        role: "Artist Illustration",
         company: "CREATIVE AGENCY",
-        desc: "Designed and implemented award-winning websites with a focus on micro-interactions and 3D web experiences.",
-        tech: ["WebGL", "Three.js", "GSAP"]
+        desc: "Creating illustration for various projects.",
+        tech: ["Clip Studio Paint", "Photoshop", "Figma"]
     },
     {
         year: "2020 - 2022",
         role: "Frontend Developer",
         company: "STARTUP INC",
         desc: "Developed responsive React applications and established the core design system for scalable products.",
-        tech: ["React", "Redux", "Sass"]
+        tech: ["React", "Next.js", "Tailwind CSS", "TypeScript", "Node.js", "MongoDB", "Firebase"]
     }
 ];
 
