@@ -24,8 +24,7 @@ export default function Navbar() {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
-        // Use passive listener for better scroll performance
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('scroll', handleScroll);
 
         // Attempt autoplay
         const playAudio = async () => {

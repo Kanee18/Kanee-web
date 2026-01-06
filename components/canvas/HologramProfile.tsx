@@ -4,7 +4,6 @@ import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Color } from 'three';
 import { useTexture } from '@react-three/drei';
-import { useDeviceDetection } from '@/lib/useDeviceDetection';
 
 // --- SHADERS ---
 
@@ -108,43 +107,7 @@ function HologramPlane() {
     );
 }
 
-// Static fallback component for mobile
-function StaticHologramFallback() {
-    return (
-        <div className="w-full h-full flex items-center justify-center relative">
-            {/* Cyan tinted image with CSS effects */}
-            <div
-                className="w-full h-full bg-contain bg-center bg-no-repeat relative"
-                style={{
-                    backgroundImage: 'url(/assets/profile.png)',
-                    filter: 'sepia(100%) saturate(300%) hue-rotate(150deg) brightness(0.8)',
-                }}
-            >
-                {/* Scanline overlay */}
-                <div
-                    className="absolute inset-0 pointer-events-none opacity-30"
-                    style={{
-                        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)',
-                    }}
-                />
-            </div>
-        </div>
-    );
-}
-
 export function HologramProfile() {
-    const { isMobile, prefersReducedMotion, isReady } = useDeviceDetection();
-
-    // Show static fallback on mobile or reduced motion
-    if (isReady && (isMobile || prefersReducedMotion)) {
-        return <StaticHologramFallback />;
-    }
-
-    // During SSR, show nothing to prevent hydration mismatch
-    if (!isReady) {
-        return <div className="w-full h-full bg-white/5 animate-pulse" />;
-    }
-
     return (
         <div className="w-full h-full">
             <Canvas
@@ -157,9 +120,9 @@ export function HologramProfile() {
                     depth: false // depth unused for 2D plane
                 }}
             >
+                {/* <OrbitControls enableZoom={false} /> */}
                 <HologramPlane />
             </Canvas>
         </div>
     );
 }
-

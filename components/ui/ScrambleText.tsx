@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ScrambleTextProps {
@@ -26,37 +26,11 @@ export function ScrambleText({
 }: ScrambleTextProps) {
     const [displayText, setDisplayText] = useState(initialStartText || endText);
     const [mounted, setMounted] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
-    const containerRef = useRef<HTMLSpanElement>(null);
-
-    // Visibility detection via IntersectionObserver
-    useEffect(() => {
-        if (!containerRef.current) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    setIsVisible(entry.isIntersecting);
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        observer.observe(containerRef.current);
-
-        return () => observer.disconnect();
-    }, []);
 
     useEffect(() => {
         setMounted(true);
-    }, []);
-
-    useEffect(() => {
-        // Don't run animation if not visible or not mounted
-        if (!mounted || !isVisible) return;
-
-        let interval: ReturnType<typeof setInterval> | undefined;
-        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+        let interval: NodeJS.Timeout | undefined;
+        let timeoutId: NodeJS.Timeout | undefined;
 
         let isForward = true;
 
@@ -67,7 +41,6 @@ export function ScrambleText({
                 const fromTxt = isForward ? (initialStartText || endText) : endText;
                 const toTxt = isForward ? endText : (initialStartText || endText);
 
-                // Increased interval from 50ms to 80ms for better CPU performance
                 interval = setInterval(() => {
                     const now = Date.now();
                     const progress = Math.min((now - startTime) / duration, 1);
@@ -105,12 +78,12 @@ export function ScrambleText({
 
                     if (progress >= 1) {
                         if (interval) clearInterval(interval);
-                        if (loop && isVisible) {
+                        if (loop) {
                             isForward = !isForward;
                             runSequence(holdDuration);
                         }
                     }
-                }, 80); // Increased from 50ms to 80ms
+                }, 50);
 
             }, delayTime);
         };
@@ -121,7 +94,7 @@ export function ScrambleText({
             if (timeoutId) clearTimeout(timeoutId);
             if (interval) clearInterval(interval);
         };
-    }, [endText, initialStartText, duration, delay, loop, holdDuration, mounted, isVisible]);
+    }, [endText, initialStartText, duration, delay, loop, holdDuration]);
 
     // Render original text during SSR to match hydration, but scrambled once mounted
     if (!mounted) {
@@ -129,9 +102,8 @@ export function ScrambleText({
     }
 
     return (
-        <span ref={containerRef} className={cn("inline-block", className)}>
+        <span className={cn("inline-block", className)}>
             {displayText}
         </span>
     );
 }
-

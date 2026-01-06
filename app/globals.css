@@ -12,9 +12,6 @@ body {
   background: var(--background);
   font-family: var(--font-inter), sans-serif;
   overflow-x: hidden;
-  /* Improve touch scroll performance */
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
 }
 
 /* Custom Scrollbar */
@@ -73,6 +70,11 @@ body {
 .group:hover .glitch-2 {
   opacity: 1;
 }
+
+/* Also trigger on periodic interval via JS class if needed, or just let it run low opacity always? 
+   User wants "animation", usually constant but subtle is best for cyberpunk.
+   Let's make it always active but subtle.
+*/
 
 .glitch-active .glitch-1 {
   opacity: 0.5;
@@ -144,51 +146,5 @@ body {
   100% {
     clip-path: inset(40% 0 30% 0);
     transform: translate(-2px, 1px);
-  }
-}
-
-/* Prefers Reduced Motion - Disable animations for accessibility */
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .glitch-1,
-  .glitch-2 {
-    animation: none !important;
-    opacity: 0 !important;
-  }
-
-  .animate-pulse,
-  .animate-ping,
-  .animate-bounce,
-  .animate-spin,
-  .animate-scanline,
-  .animate-float-slow {
-    animation: none !important;
-  }
-}
-
-/* Mobile performance optimizations */
-@media (max-width: 768px) {
-
-  /* Reduce blur effects on mobile */
-  .backdrop-blur-md {
-    backdrop-filter: blur(8px);
-  }
-
-  .backdrop-blur-sm {
-    backdrop-filter: blur(4px);
-  }
-
-  /* Disable expensive box shadows on mobile */
-  .shadow-\[0_0_15px_currentColor\] {
-    box-shadow: none;
   }
 }
