@@ -32,7 +32,7 @@ export default function Skills() {
         { name: "Next.js", level: 85, x: 28, y: 25 },
         { name: "TypeScript", level: 88, x: 42, y: 55 },
         { name: "Three.js", level: 75, x: 55, y: 35 },
-        { name: "GSAP", level: 80, x: 68, y: 60 },
+        { name: "Python", level: 80, x: 68, y: 60 },
         { name: "Node.js", level: 82, x: 82, y: 30 },
         { name: "PostgreSQL", level: 78, x: 92, y: 45 },
     ];
