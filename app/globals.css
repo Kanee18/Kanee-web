@@ -3,25 +3,148 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #050505;
+  --foreground: #ffffff;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffafb6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #fb7185;
+}
+
+/* Glitch Effect Utilities */
+.glitch-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-mirror {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.glitch-1 {
+  color: #ffafb6;
+  /* Pink */
+  animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  transform: translate(-2px, 0);
+  opacity: 0;
+}
+
+.glitch-2 {
+  color: #06b6d4;
+  /* Cyan/Blue to contrast */
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+  clip-path: polygon(0 80%, 100% 20%, 100% 100%, 0 100%);
+  transform: translate(2px, 0);
+  opacity: 0;
+}
+
+.group:hover .glitch-1,
+.group:hover .glitch-2 {
+  opacity: 1;
+}
+
+/* Also trigger on periodic interval via JS class if needed, or just let it run low opacity always? 
+   User wants "animation", usually constant but subtle is best for cyberpunk.
+   Let's make it always active but subtle.
+*/
+
+.glitch-active .glitch-1 {
+  opacity: 0.5;
+}
+
+.glitch-active .glitch-2 {
+  opacity: 0.5;
+}
+
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(-2px, 1px);
+  }
+
+  20% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(2px, -1px);
+  }
+
+  40% {
+    clip-path: inset(40% 0 50% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  60% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(2px, -2px);
+  }
+
+  80% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-1px, 1px);
+  }
+
+  100% {
+    clip-path: inset(30% 0 20% 0);
+    transform: translate(1px, -1px);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(2px, -1px);
+  }
+
+  20% {
+    clip-path: inset(30% 0 20% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  40% {
+    clip-path: inset(70% 0 10% 0);
+    transform: translate(2px, 1px);
+  }
+
+  60% {
+    clip-path: inset(20% 0 50% 0);
+    transform: translate(-1px, 2px);
+  }
+
+  80% {
+    clip-path: inset(60% 0 20% 0);
+    transform: translate(1px, -2px);
+  }
+
+  100% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(-2px, 1px);
   }
 }
