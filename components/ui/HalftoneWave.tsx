@@ -1,8 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useDeviceDetection } from '@/lib/useDeviceDetection';
 
 export default function HalftoneWave() {
+    const { isMobile, prefersReducedMotion, isReady } = useDeviceDetection();
+
+    // Disable on mobile or reduced motion preference for performance
+    if (!isReady || isMobile || prefersReducedMotion) {
+        return null;
+    }
+
     return (
         <div
             className="fixed top-0 left-0 w-[40vw] h-[50vh] z-0 pointer-events-none mix-blend-screen select-none"
@@ -46,3 +54,4 @@ export default function HalftoneWave() {
         </div>
     );
 }
+

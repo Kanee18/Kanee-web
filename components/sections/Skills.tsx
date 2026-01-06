@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { GlitchText } from '@/components/ui/GlitchText';
 import { motion } from 'framer-motion';
+import { useDeviceDetection } from '@/lib/useDeviceDetection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,17 +13,24 @@ export default function Skills() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [viewed, setViewed] = useState(false);
     const [cpuLoad, setCpuLoad] = useState(12);
+    const { isMobile, prefersReducedMotion, isReady } = useDeviceDetection();
+
+    // Determine if we should reduce animations
+    const shouldReduceAnimations = isReady && (isMobile || prefersReducedMotion);
 
     useEffect(() => {
         // Optimization: Only run interval when in view and less frequently
         if (!viewed) return;
 
+        // Slower interval on mobile (5s vs 2s)
+        const intervalTime = shouldReduceAnimations ? 5000 : 2000;
+
         const interval = setInterval(() => {
             setCpuLoad(Math.floor(Math.random() * 30 + 10));
-        }, 2000); // Slower update rate (2s) instead of implicit fast updates
+        }, intervalTime);
 
         return () => clearInterval(interval);
-    }, [viewed]);
+    }, [viewed, shouldReduceAnimations]);
 
     useEffect(() => {
         setCpuLoad(Math.floor(Math.random() * 30 + 10)); // Randomize on client mount
@@ -32,6 +40,7 @@ export default function Skills() {
                 trigger: containerRef.current,
                 start: "top 60%",
                 onEnter: () => setViewed(true),
+                once: true, // Only trigger once for performance
             });
         }, containerRef);
 
@@ -58,6 +67,9 @@ export default function Skills() {
         }
         return path;
     };
+
+    // Calculate histogram bar count based on device
+    const histogramBars = shouldReduceAnimations ? 8 : 15;
 
     return (
         <section id="skills" className="py-24 bg-[#050505] min-h-[90vh] flex flex-col justify-center relative overflow-hidden" ref={containerRef}>
@@ -89,9 +101,13 @@ export default function Skills() {
                         style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
                     </div>
 
-                    {/* Scanline Animation */}
-                    <div className="absolute inset-0 z-10 pointer-events-none bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] opacity-20"></div>
-                    <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/30 blur-[2px] z-20 animate-scanline"></div>
+                    {/* Scanline Animation - disabled on mobile for performance */}
+                    {!shouldReduceAnimations && (
+                        <>
+                            <div className="absolute inset-0 z-10 pointer-events-none bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] opacity-20"></div>
+                            <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/30 blur-[2px] z-20 animate-scanline"></div>
+                        </>
+                    )}
 
                     {/* Frame Brackets */}
                     <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/50 z-30"></div>
@@ -110,18 +126,20 @@ export default function Skills() {
                     </div>
 
 
-                    {/* Dummy Histogram (Background) - Optimized count */}
-                    <div className="absolute inset-0 z-0 flex items-end justify-between px-2 pointer-events-none opacity-10">
-                        {[...Array(20)].map((_, i) => ( // Reduced from 40 to 20 for mobile perf
-                            <motion.div
-                                key={i}
-                                initial={{ height: "5%" }}
-                                animate={viewed ? { height: `${Math.random() * 60 + 5}%` } : { height: "5%" }}
-                                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", delay: Math.random() * 2, ease: "easeInOut" }}
-                                className="w-1 bg-cyan-500/30"
-                            />
-                        ))}
-                    </div>
+                    {/* Dummy Histogram (Background) - Reduced count and disabled on mobile */}
+                    {!shouldReduceAnimations && (
+                        <div className="absolute inset-0 z-0 flex items-end justify-between px-2 pointer-events-none opacity-10">
+                            {[...Array(histogramBars)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ height: "5%" }}
+                                    animate={viewed ? { height: `${Math.random() * 60 + 5}%` } : { height: "5%" }}
+                                    transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", delay: Math.random() * 2, ease: "easeInOut" }}
+                                    className="w-1 bg-cyan-500/30"
+                                />
+                            ))}
+                        </div>
+                    )}
 
                     {/* THE WAVES */}
                     <svg className="absolute inset-0 w-full h-full z-10 preserve-3d" viewBox="0 0 100 100" preserveAspectRatio="none">

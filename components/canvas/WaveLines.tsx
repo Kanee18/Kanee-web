@@ -7,8 +7,8 @@ import * as THREE from 'three';
 function WaveLine({ z, color, speed, offset }: { z: number; color: string; speed: number; offset: number }) {
     const lineRef = useRef<THREE.Line>(null);
 
-    // Number of points per line
-    const count = 100;
+    // Number of points per line - reduced for performance
+    const count = 60;
     const width = 20;
 
     // Create initial geometry
@@ -47,12 +47,13 @@ function WaveLine({ z, color, speed, offset }: { z: number; color: string; speed
 }
 
 export function WaveLines() {
+    // Reduced from 15 to 8 lines for better performance
     const lines = useMemo(() => {
         const l = [];
         const colors = ['#ffffff', '#a1a1aa', '#71717a']; // Greyscale / White
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 8; i++) {
             l.push({
-                z: -5 + (i * 0.5),
+                z: -5 + (i * 0.7),
                 color: colors[i % colors.length],
                 speed: 0.2 + (Math.random() * 0.1),
                 offset: i * 0.5

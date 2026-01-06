@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Color, AdditiveBlending, ShaderMaterial, Vector2 } from 'three';
-import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { Color, AdditiveBlending } from 'three';
+import { PerspectiveCamera } from '@react-three/drei';
+import { useDeviceDetection } from '@/lib/useDeviceDetection';
 
 // --- SHADERS ---
 
@@ -139,12 +140,62 @@ function RadarRings() {
     );
 }
 
+// CSS fallback for mobile - simulates radar effect without WebGL
+function RadarFallback() {
+    return (
+        <div className="absolute inset-0 w-full h-full opacity-40">
+            {/* Radial gradient background */}
+            <div
+                className="absolute inset-0"
+                style={{
+                    background: 'radial-gradient(circle at center, rgba(0,240,255,0.15) 0%, transparent 50%)',
+                }}
+            />
+            {/* Concentric circles */}
+            <div className="absolute inset-0 flex items-center justify-center">
+                {[1, 2, 3, 4].map((i) => (
+                    <div
+                        key={i}
+                        className="absolute rounded-full border border-cyan-500/10"
+                        style={{
+                            width: `${i * 25}%`,
+                            height: `${i * 25}%`,
+                        }}
+                    />
+                ))}
+                {/* Crosshairs */}
+                <div className="absolute w-full h-px bg-cyan-500/5" />
+                <div className="absolute w-px h-full bg-cyan-500/5" />
+            </div>
+        </div>
+    );
+}
+
 export function HolographicRadar() {
+    const { isMobile, prefersReducedMotion, isReady } = useDeviceDetection();
+
+    // Show CSS fallback on mobile or reduced motion
+    if (isReady && (isMobile || prefersReducedMotion)) {
+        return <RadarFallback />;
+    }
+
+    // During SSR, show nothing
+    if (!isReady) {
+        return null;
+    }
+
     return (
         <div className="absolute inset-0 w-full h-full opacity-60">
-            <Canvas camera={{ position: [0, 5, 8], fov: 45 }}>
+            <Canvas
+                camera={{ position: [0, 5, 8], fov: 45 }}
+                dpr={[1, 1.5]}
+                gl={{
+                    powerPreference: 'high-performance',
+                    antialias: false,
+                    stencil: false,
+                }}
+            >
                 <PerspectiveCamera makeDefault position={[0, 4, 6]} fov={50} />
-                {/* <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} /> */}
 
                 <TerrainPlane />
                 <RadarRings />
@@ -152,3 +203,4 @@ export function HolographicRadar() {
         </div>
     );
 }
+
