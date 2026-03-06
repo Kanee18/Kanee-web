@@ -149,7 +149,7 @@ export default function Skills() {
             <div className="absolute inset-0 flex items-center pt-40">
 
                 {/* Spotlight glow — on top of cards with glow effect */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/4 w-[1000px] h-[600px] rounded-full pointer-events-none z-10" style={{ background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.008) 50%, transparent 70%)', filter: 'blur(160px)', mixBlendMode: 'screen' }} />
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/4 w-[900px] h-[500px] rounded-full pointer-events-none z-10" style={{ background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0.01) 60%, transparent 75%)', filter: 'blur(120px)', mixBlendMode: 'screen' }} />
                 <div
                     ref={stripRef}
                     className="flex items-center gap-6 md:gap-10 pl-8"
