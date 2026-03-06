@@ -4,230 +4,247 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { GlitchText } from '@/components/ui/GlitchText';
-import { motion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ─── card data ─── */
+const skillCards = [
+    {
+        title: 'FRONTEND',
+        subtitle: 'UI / INTERFACE',
+        skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
+        color: '#ffafb6',
+        rotate: -4,
+    },
+    {
+        title: 'BACKEND',
+        subtitle: 'SERVER / API',
+        skills: ['Node.js', 'Express', 'Python', 'REST API'],
+        color: '#fb7185',
+        rotate: 3,
+    },
+    {
+        title: '3D / CREATIVE',
+        subtitle: 'VISUAL ENGINE',
+        skills: ['Three.js', 'R3F', 'GSAP', 'Framer Motion'],
+        color: '#c084fc',
+        rotate: -2,
+    },
+    {
+        title: 'DATABASE',
+        subtitle: 'DATA LAYER',
+        skills: ['PostgreSQL', 'MongoDB', 'Prisma', 'Redis'],
+        color: '#67e8f9',
+        rotate: 5,
+    },
+    {
+        title: 'DEVOPS',
+        subtitle: 'DEPLOYMENT',
+        skills: ['Docker', 'Vercel', 'GitHub Actions', 'Linux'],
+        color: '#86efac',
+        rotate: -3,
+    },
+    {
+        title: 'DESIGN',
+        subtitle: 'UI/UX CRAFT',
+        skills: ['Figma', 'Photoshop', 'Illustrator', 'Blender'],
+        color: '#fbbf24',
+        rotate: 4,
+    },
+    {
+        title: 'TOOLS',
+        subtitle: 'WORKFLOW',
+        skills: ['Git', 'VS Code', 'Postman', 'Notion'],
+        color: '#f472b6',
+        rotate: -5,
+    },
+];
+
+/* duplicate for seamless infinite scroll */
+const allCards = [...skillCards, ...skillCards];
+
 export default function Skills() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [viewed, setViewed] = useState(false);
-    const [cpuLoad, setCpuLoad] = useState(12);
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const stripRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
 
+    /* entrance + infinite scroll animation */
     useEffect(() => {
-        // Optimization: Only run interval when in view and less frequently
-        if (!viewed) return;
-
-        const interval = setInterval(() => {
-            setCpuLoad(Math.floor(Math.random() * 30 + 10));
-        }, 2000); // Slower update rate (2s) instead of implicit fast updates
-
-        return () => clearInterval(interval);
-    }, [viewed]);
-
-    useEffect(() => {
-        setCpuLoad(Math.floor(Math.random() * 30 + 10)); // Randomize on client mount
-
         const ctx = gsap.context(() => {
+            /* trigger visibility */
             ScrollTrigger.create({
-                trigger: containerRef.current,
-                start: "top 60%",
-                onEnter: () => setViewed(true),
+                trigger: sectionRef.current,
+                start: 'top 80%',
+                onEnter: () => setIsVisible(true),
             });
-        }, containerRef);
+
+            /* cards entrance — fly up with stagger */
+            gsap.fromTo(
+                '.tilt-card',
+                { opacity: 0, y: 120, scale: 0.85 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.9,
+                    stagger: 0.06,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top 80%',
+                    },
+                }
+            );
+
+            /* infinite marquee — scroll the strip to the left */
+            if (stripRef.current) {
+                const totalWidth = stripRef.current.scrollWidth / 2; // half because its duplicated
+                gsap.to(stripRef.current, {
+                    x: -totalWidth,
+                    duration: 40,
+                    ease: 'none',
+                    repeat: -1,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top 80%',
+                    },
+                });
+            }
+        }, sectionRef);
 
         return () => ctx.revert();
     }, []);
 
-    const skills = [
-        { name: "React", level: 90, x: 15, y: 40 },
-        { name: "Next.js", level: 85, x: 28, y: 25 },
-        { name: "TypeScript", level: 88, x: 42, y: 55 },
-        { name: "Three.js", level: 75, x: 55, y: 35 },
-        { name: "Python", level: 80, x: 68, y: 60 },
-        { name: "Node.js", level: 82, x: 82, y: 30 },
-        { name: "PostgreSQL", level: 78, x: 92, y: 45 },
-    ];
-
-    // SVG Path Generation for Waves
-    const generateWavePath = (amplitude: number, frequency: number, phase: number, yOffset: number) => {
-        const startY = yOffset + Math.sin((0 * frequency + phase) * Math.PI / 180) * amplitude;
-        let path = `M 0 ${startY}`;
-        for (let x = 1; x <= 100; x++) {
-            const y = yOffset + Math.sin((x * frequency + phase) * Math.PI / 180) * amplitude;
-            path += ` L ${x} ${y}`;
-        }
-        return path;
-    };
-
     return (
-        <section id="skills" className="py-24 bg-[#050505] min-h-[90vh] flex flex-col justify-center relative overflow-hidden" ref={containerRef}>
+        <section
+            id="skills"
+            ref={sectionRef}
+            className="relative w-full bg-[#050505] overflow-hidden select-none"
+            style={{ minHeight: '100vh' }}
+        >
+            {/* Crosshair marks — matching reference aesthetic */}
+            {[
+                'top-6 left-6',
+                'top-6 right-6',
+                'bottom-6 left-6',
+                'bottom-6 right-6',
+            ].map((pos, i) => (
+                <svg key={i} className={`absolute ${pos} w-4 h-4 text-white/15 z-30`} viewBox="0 0 16 16">
+                    <line x1="8" y1="0" x2="8" y2="16" stroke="currentColor" strokeWidth="0.5" />
+                    <line x1="0" y1="8" x2="16" y2="8" stroke="currentColor" strokeWidth="0.5" />
+                </svg>
+            ))}
 
-            {/* Background Details */}
-            <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-lenis-pink/20 to-transparent"></div>
-            <div className="absolute bottom-0 w-full h-px bg-gradient-to-r from-transparent via-lenis-pink/20 to-transparent"></div>
+            {/* ── Top title — like "EXPLORE KJP FAMILY PRODUCTS" ── */}
+            <div className="absolute top-36 left-0 right-0 z-30 text-center px-6">
+                <h2 className="text-3xl md:text-7xl font-orbitron font-bold text-white tracking-wider mb-3">
+                    <GlitchText text="TECHNICAL_DATA" />
+                </h2>
+                <p className="text-xs md:text-sm font-mono text-white/40 max-w-xl mx-auto leading-relaxed tracking-wide">
+                    Core technologies and tools powering creative digital experiences — always evolving, always improving.
+                </p>
+            </div>
 
-            <div className="container mx-auto px-6 relative z-10 h-full flex flex-col">
-                <div className="mb-12">
-                    <h2 className="text-3xl md:text-6xl font-orbitron font-bold text-white text-left">
-                        <GlitchText text="TECHNICAL_DATA" />
-                    </h2>
-                    <div className="flex items-center gap-4 mt-2">
-                        <div className="h-[1px] w-24 bg-lenis-pink"></div>
-                        <span className="text-sm text-lenis-pink font-mono tracking-widest animate-pulse">SYSTEM DIAGNOSTICS // ONLINE</span>
-                    </div>
-                </div>
+            {/* ── Card Strip ── */}
+            <div className="absolute inset-0 flex items-center pt-40">
 
-                {/* Cyber-Monitor Container */}
-                <div className="relative w-full h-[50vh] min-h-[400px] md:h-[60vh] bg-[#0a0a0a]/80 backdrop-blur-md rounded-sm overflow-hidden border border-white/5 group">
-
-                    {/* Monitor Glow */}
-                    <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.9)] z-10 pointer-events-none"></div>
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(6,182,212,0.05)_0%,_transparent_70%)] z-0"></div>
-
-                    {/* Grid Background */}
-                    <div className="absolute inset-0 z-0 opacity-10"
-                        style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
-                    </div>
-
-                    {/* Scanline Animation */}
-                    <div className="absolute inset-0 z-10 pointer-events-none bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] opacity-20"></div>
-                    <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/30 blur-[2px] z-20 animate-scanline"></div>
-
-                    {/* Frame Brackets */}
-                    <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/50 z-30"></div>
-                    <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-cyan-500/50 z-30"></div>
-                    <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-cyan-500/50 z-30"></div>
-                    <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-cyan-500/50 z-30"></div>
-
-                    {/* UI Tech Labels */}
-                    <div className="absolute top-4 right-4 z-30 text-[10px] font-mono text-cyan-500/70 tracking-widest">
-                        CPU_LOAD: {cpuLoad}% <br />
-                        MEM_ALLOC: OPTIMAL
-                    </div>
-                    <div className="absolute bottom-4 left-6 z-30 text-[10px] font-mono text-cyan-500/50 tracking-widest flex items-center gap-2">
-                        <span className="w-2 h-2 bg-cyan-500 rounded-full animate-ping"></span>
-                        LIVE_FEED
-                    </div>
-
-
-                    {/* Dummy Histogram (Background) - Optimized count */}
-                    <div className="absolute inset-0 z-0 flex items-end justify-between px-2 pointer-events-none opacity-10">
-                        {[...Array(20)].map((_, i) => ( // Reduced from 40 to 20 for mobile perf
-                            <motion.div
-                                key={i}
-                                initial={{ height: "5%" }}
-                                animate={viewed ? { height: `${Math.random() * 60 + 5}%` } : { height: "5%" }}
-                                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", delay: Math.random() * 2, ease: "easeInOut" }}
-                                className="w-1 bg-cyan-500/30"
-                            />
-                        ))}
-                    </div>
-
-                    {/* THE WAVES */}
-                    <svg className="absolute inset-0 w-full h-full z-10 preserve-3d" viewBox="0 0 100 100" preserveAspectRatio="none">
-
-                        {/* Wave 1 - Cyan Main */}
-                        <motion.path
-                            d={generateWavePath(20, 5, 0, 50)}
-                            fill="none"
-                            stroke="#06b6d4"
-                            strokeWidth="0.4"
-                            initial={{ pathLength: 0, opacity: 0 }}
-                            animate={viewed ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-                            transition={{ duration: 2, ease: "easeInOut" }}
-                        />
-                        {/* Glow for Wave 1 */}
-                        <motion.path
-                            d={generateWavePath(20, 5, 0, 50)}
-                            fill="none"
-                            stroke="#06b6d4"
-                            strokeWidth="1.5"
-                            strokeOpacity="0.2"
-                            className="blur-[2px]"
-                            initial={{ pathLength: 0 }}
-                            animate={viewed ? { pathLength: 1 } : { pathLength: 0 }}
-                            transition={{ duration: 2, ease: "easeInOut" }}
-                        />
-
-                        {/* Wave 2 - Secondary (Orange) */}
-                        <motion.path
-                            d={generateWavePath(25, 4, 120, 60)}
-                            fill="none"
-                            stroke="#ff9f43"
-                            strokeWidth="0.3"
-                            opacity="0.8"
-                            initial={{ pathLength: 0, opacity: 0 }}
-                            animate={viewed ? { pathLength: 1, opacity: 0.8 } : { pathLength: 0, opacity: 0 }}
-                            transition={{ duration: 2.2, delay: 0.2, ease: "easeInOut" }}
-                        />
-
-                        {/* Wave 3 - Tertiary (Purple) */}
-                        <motion.path
-                            d={generateWavePath(15, 7, 200, 40)}
-                            fill="none"
-                            stroke="#8b5cf6"
-                            strokeWidth="0.2"
-                            opacity="0.6"
-                            initial={{ pathLength: 0, opacity: 0 }}
-                            animate={viewed ? { pathLength: 1, opacity: 0.6 } : { pathLength: 0, opacity: 0 }}
-                            transition={{ duration: 2.5, delay: 0.4, ease: "easeInOut" }}
-                        />
-                    </svg>
-
-                    {/* Data Points / Flags */}
-                    {skills.map((skill, index) => {
-                        // 0: Cyan, 1: Orange, 2: Purple
-                        const waveType = index % 3;
-                        let waveY = 0;
-                        let colorHex = "";
-
-                        if (waveType === 0) { // Cyan
-                            waveY = 50 + Math.sin((skill.x * 5 + 0) * Math.PI / 180) * 20;
-                            colorHex = "#06b6d4";
-                        } else if (waveType === 1) { // Orange
-                            waveY = 60 + Math.sin((skill.x * 4 + 120) * Math.PI / 180) * 25;
-                            colorHex = "#ff9f43";
-                        } else { // Purple
-                            waveY = 40 + Math.sin((skill.x * 7 + 200) * Math.PI / 180) * 15;
-                            colorHex = "#8b5cf6";
-                        }
-
-                        return (
-                            <motion.div
-                                key={index}
-                                className="absolute z-20 w-0 h-0"
-                                style={{ left: `${skill.x}%`, top: `${waveY}%` }}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={viewed ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-                                transition={{ duration: 0.5, delay: 1.5 + (index * 0.1), type: "spring" }}
+                {/* Spotlight glow — on top of cards with glow effect */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/4 w-[1000px] h-[600px] rounded-full pointer-events-none z-10" style={{ background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.008) 50%, transparent 70%)', filter: 'blur(160px)', mixBlendMode: 'screen' }} />
+                <div
+                    ref={stripRef}
+                    className="flex items-center gap-6 md:gap-10 pl-8"
+                    style={{ willChange: 'transform' }}
+                >
+                    {allCards.map((card, index) => (
+                        <div
+                            key={`${card.title}-${index}`}
+                            className="tilt-card flex-shrink-0"
+                            style={{
+                                width: '300px',
+                                height: '420px',
+                                transform: `rotate(${card.rotate}deg)`,
+                                transition: 'transform 0.4s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                                (e.currentTarget as HTMLDivElement).style.transform = 'rotate(0deg) scale(1.04)';
+                            }}
+                            onMouseLeave={(e) => {
+                                (e.currentTarget as HTMLDivElement).style.transform = `rotate(${card.rotate}deg) scale(1)`;
+                            }}
+                        >
+                            <div
+                                className="w-full h-full relative overflow-hidden rounded-lg group/c"
+                                style={{
+                                    background: 'linear-gradient(160deg, #111 0%, #0a0a0a 50%, #0d0d0d 100%)',
+                                    border: '1px solid rgba(255,255,255,0.07)',
+                                    boxShadow: '0 20px 60px rgba(0,0,0,0.8), 0 0 1px rgba(255,255,255,0.1)',
+                                }}
                             >
-                                {/* Glowing Dot */}
+                                {/* Top accent line */}
                                 <div
-                                    className="w-3 h-3 rounded-full absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_currentColor] z-10"
-                                    style={{ backgroundColor: colorHex, color: colorHex }} // for shadow inheritance
-                                >
-                                    <div className="absolute inset-0 rounded-full animate-ping opacity-75" style={{ backgroundColor: colorHex }}></div>
+                                    className="absolute top-0 inset-x-0 h-[2px] opacity-50 group-hover/c:opacity-100 transition-opacity duration-300"
+                                    style={{ background: `linear-gradient(90deg, transparent 5%, ${card.color}, transparent 95%)` }}
+                                />
+
+                                {/* Content */}
+                                <div className="relative z-10 h-full flex flex-col justify-between p-6">
+                                    <div>
+                                        <div
+                                            className="text-[9px] font-mono tracking-[0.35em] mb-1 opacity-40"
+                                            style={{ color: card.color }}
+                                        >
+                                            {card.subtitle}
+                                        </div>
+                                        <h3 className="text-xl font-orbitron font-bold text-white mb-4 leading-tight">
+                                            {card.title}
+                                        </h3>
+                                        <div className="w-full h-px mb-5 opacity-10" style={{ backgroundColor: card.color }} />
+                                        <ul className="space-y-3.5">
+                                            {card.skills.map((skill, si) => (
+                                                <li key={skill} className="flex items-center gap-3 text-sm font-mono text-white/65 group-hover/c:text-white/90 transition-colors">
+                                                    <span
+                                                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                                                        style={{ backgroundColor: card.color, boxShadow: `0 0 6px ${card.color}50` }}
+                                                    />
+                                                    <span className="text-[10px] opacity-30 tabular-nums" style={{ color: card.color }}>0{si + 1}</span>
+                                                    {skill}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    {/* Bottom */}
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[8px] font-mono tracking-[0.2em] opacity-20" style={{ color: card.color }}>MODULE_ACTIVE</span>
+                                        <span className="flex items-center gap-1">
+                                            <span className="w-1 h-1 rounded-full animate-pulse" style={{ backgroundColor: card.color }} />
+                                            <span className="text-[8px] font-mono opacity-20" style={{ color: card.color }}>ONLINE</span>
+                                        </span>
+                                    </div>
                                 </div>
 
-                                {/* Vertical Leader Line */}
-                                <div className="absolute bottom-0 left-0 w-[1px] h-16 bg-gradient-to-t from-transparent to-white/30 -translate-x-1/2 origin-bottom" />
+                                {/* Corner brackets */}
+                                <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l opacity-15" style={{ borderColor: card.color }} />
+                                <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r opacity-15" style={{ borderColor: card.color }} />
 
-                                {/* Tag Box */}
+                                {/* Hover glow */}
                                 <div
-                                    className="absolute bottom-16 left-0 -translate-x-1/2 mb-2 px-3 py-2 rounded-sm border backdrop-blur-md flex flex-col items-center min-w-[80px] cursor-default hover:scale-110 transition-transform hover:z-50 bg-black/60 shadow-lg"
-                                    style={{ borderColor: `${colorHex}50` }}
-                                >
-                                    <span className="text-[10px] font-mono leading-none tracking-tighter opacity-70 mb-1" style={{ color: colorHex }}>
-                                        SYNC_{skill.level}%
-                                    </span>
-                                    <span className="text-sm font-bold font-orbitron leading-none text-white">{skill.name}</span>
-                                </div>
-                            </motion.div>
-                        );
-                    })}
-
+                                    className="absolute inset-0 opacity-0 group-hover/c:opacity-100 transition-opacity duration-500 pointer-events-none"
+                                    style={{ background: `radial-gradient(ellipse at 50% 30%, ${card.color}0a 0%, transparent 60%)` }}
+                                />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
+
+
+
+            {/* ── Edge vignettes ── */}
+            <div className="absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-[#050505] to-transparent z-20 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-[#050505] to-transparent z-20 pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-[10%] bg-gradient-to-b from-[#050505] to-transparent z-20 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent z-20 pointer-events-none" />
         </section>
     );
 }
